@@ -17,7 +17,31 @@
 ## Requirements
 
 - **[Bun](https://bun.sh/) >= 1.0** — runtime. This project uses `bun:sqlite` for the knowledge graph, so Node alone is not enough.
-- **[ChromaDB](https://docs.trychroma.com/getting-started)** server — install via `pip install chromadb` and run locally (the server will auto-spawn one on first use if `chroma` is on your `PATH`).
+- **[Python](https://www.python.org/) 3.9–3.12** — required only by ChromaDB (see below). Not used by `memorize` itself.
+- **[ChromaDB](https://docs.trychroma.com/getting-started)** — vector store for drawers. **Effectively required**: without it, all drawer tools (`mem_add_drawer`, `mem_search`, `mem_diary_*`, `mem_wake_up`, mining, …) either throw or return empty. Only the SQLite-backed knowledge-graph tools (`mem_kg_*`, `mem_graph_stats`) and a few static/pure-text tools keep working — that's roughly 10 of the 38 tools. SQLite is a *separate backend*, not a fallback for Chroma.
+
+### Install ChromaDB
+
+ChromaDB is a Python package and runs as a separate local process.
+
+```bash
+# 1. Install with pipx (isolates Chroma's deps AND puts `chroma` on global PATH)
+pipx install chromadb
+
+# 2. Verify the CLI is reachable from any shell
+chroma --version
+
+# 3. Start the server (binds to 127.0.0.1:8000 by default)
+chroma run --path ~/.memorize/palace
+```
+
+If `chroma` is on your `PATH`, `memorize` auto-spawns it on first use against the active palace. On Windows, running it manually in a separate terminal is more reliable and gives you visible logs.
+
+> **Avoid plain `venv`** for this one — `memorize` (and the MCP host that launches it) won't have the venv activated, so `chroma` won't be on `PATH` and auto-spawn will fail. `pipx` solves this because it installs into an isolated env but exposes a global shim.
+>
+> `pip install --user chromadb` also works *if* `~/.local/bin` (Linux/macOS) or `%APPDATA%\Python\Scripts` (Windows) is on your `PATH`.
+
+For **tests or throwaway scripts only**, set `CHROMA_URL=memory` to swap in an in-process `Map`-backed mock collection. **This is not persistent** — drawers are lost the moment the process exits. The SQLite knowledge graph persists regardless of `CHROMA_URL`, but if you want drawers to survive a restart you must run a real ChromaDB server.
 
 ## Install
 
