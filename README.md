@@ -18,7 +18,7 @@
 
 - **[Bun](https://bun.sh/) >= 1.0** — runtime. This project uses `bun:sqlite` for the knowledge graph, so Node alone is not enough.
 - **[Python](https://www.python.org/) 3.9–3.12** — required only by ChromaDB (see below). Not used by `memorize` itself.
-- **[ChromaDB](https://docs.trychroma.com/getting-started)** — vector store for drawers. **Effectively required**: without it, all drawer tools (`mem_add_drawer`, `mem_search`, `mem_diary_*`, `mem_wake_up`, mining, …) either throw or return empty. Only the SQLite-backed knowledge-graph tools (`mem_kg_*`, `mem_graph_stats`) and a few static/pure-text tools keep working — that's roughly 10 of the 38 tools. SQLite is a *separate backend*, not a fallback for Chroma.
+- **[ChromaDB](https://docs.trychroma.com/getting-started)** — vector store for drawers. **Effectively required**: without it, all drawer tools (`mem_add_drawer`, `mem_search`, `mem_diary_*`, `mem_wake_up`, mining, …) either throw or return empty. Only the SQLite-backed knowledge-graph tools (`mem_kg_*`, `mem_graph_stats`) and a few static/pure-text tools keep working — that's roughly 10 of the 38 tools. SQLite is a _separate backend_, not a fallback for Chroma.
 
 ### Install ChromaDB
 
@@ -39,7 +39,7 @@ If `chroma` is on your `PATH`, `memorize` auto-spawns it on first use against th
 
 > **Avoid plain `venv`** for this one — `memorize` (and the MCP host that launches it) won't have the venv activated, so `chroma` won't be on `PATH` and auto-spawn will fail. `pipx` solves this because it installs into an isolated env but exposes a global shim.
 >
-> `pip install --user chromadb` also works *if* `~/.local/bin` (Linux/macOS) or `%APPDATA%\Python\Scripts` (Windows) is on your `PATH`.
+> `pip install --user chromadb` also works _if_ `~/.local/bin` (Linux/macOS) or `%APPDATA%\Python\Scripts` (Windows) is on your `PATH`.
 
 For **tests or throwaway scripts only**, set `CHROMA_URL=memory` to swap in an in-process `Map`-backed mock collection. **This is not persistent** — drawers are lost the moment the process exits. The SQLite knowledge graph persists regardless of `CHROMA_URL`, but if you want drawers to survive a restart you must run a real ChromaDB server.
 
@@ -112,14 +112,14 @@ Each migrated drawer gets `embedding_model: "minilm-l6-v2"` in its metadata. Con
 
 Inside that dir:
 
-| File | Purpose |
-|---|---|
-| `palace/` | ChromaDB persistent store |
-| `knowledge_graph.sqlite3` | Entities + triples |
-| `entity_registry.json` | Personal entity registry |
-| `soul.md` | L0 identity prompt (optional) |
-| `config.json` | Optional overrides: `palace_path`, `collection_name` |
-| `models/minilm-l6-v2/` | Local copy of MiniLM + vocab (or falls back to `~/.memorize/models/` if absent) |
+| File                      | Purpose                                                                         |
+| ------------------------- | ------------------------------------------------------------------------------- |
+| `palace/`                 | ChromaDB persistent store                                                       |
+| `knowledge_graph.sqlite3` | Entities + triples                                                              |
+| `entity_registry.json`    | Personal entity registry                                                        |
+| `soul.md`                 | L0 identity prompt (optional)                                                   |
+| `config.json`             | Optional overrides: `palace_path`, `collection_name`                            |
+| `models/minilm-l6-v2/`    | Local copy of MiniLM + vocab (or falls back to `~/.memorize/models/` if absent) |
 
 Env var overrides:
 
@@ -169,4 +169,4 @@ See [`CLAUDE.md`](CLAUDE.md) for a deeper architecture walk-through aimed at fut
 
 ## License
 
-[MIT](LICENSE) © Hristo Hristow
+[MIT](LICENSE)
