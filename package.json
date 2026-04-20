@@ -1,0 +1,88 @@
+{
+  "name": "memorize",
+  "version": "0.2.0",
+  "description": "MCP server for AI agent persistent memory — ChromaDB vector search + SQLite knowledge graph, with a self-hosted MiniLM embedder.",
+  "type": "module",
+  "engines": {
+    "node": ">=20.0.0",
+    "bun": ">=1.0.0"
+  },
+  "bin": {
+    "memorize-server": "dist/index.js",
+    "memorize": "dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "src",
+    "hooks",
+    "examples",
+    "CLAUDE.md",
+    "USAGE.md",
+    "AGENTS.md",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "start": "bun dist/index.js",
+    "test": "bun test",
+    "test:watch": "bun test --watch",
+    "deploy": "bun uninstall -g . && bun run build && bun install .",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "typecheck": "tsc --noEmit",
+    "embed:download": "bun scripts/download-model.ts",
+    "embed:smoke": "bun scripts/embed-smoke.ts",
+    "embed:migrate": "bun scripts/migrate-embeddings.ts",
+    "prepare": "husky"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "memory",
+    "knowledge-graph",
+    "chromadb",
+    "sqlite",
+    "embeddings",
+    "minilm",
+    "claude",
+    "ai-agents"
+  ],
+  "license": "MIT",
+  "author": {
+    "name": "Hristo Hristow",
+    "email": "h.hristow.88@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TODO-your-username/memorize.git"
+  },
+  "bugs": {
+    "url": "https://github.com/TODO-your-username/memorize/issues"
+  },
+  "homepage": "https://github.com/TODO-your-username/memorize#readme",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "chromadb": "^1.8.1",
+    "onnxruntime-node": "^1.20.0",
+    "zod": "^4.3.6"
+  },
+  "lint-staged": {
+    "*.ts": [
+      "biome check --write"
+    ]
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.4.10",
+    "@types/bun": "^1.3.11",
+    "@types/node": "^25.5.2",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0",
+    "tsup": "^8.5.1",
+    "typescript": "^6.0.2"
+  },
+  "trustedDependencies": [
+    "onnxruntime-node"
+  ]
+}
